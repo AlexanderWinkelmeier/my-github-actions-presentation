@@ -27,12 +27,12 @@ jobs:
     steps:
       - name: Output for Job 2
         run: echo "Hello from Job 2"
-      - name: Simulate Failure (optional)
-        run: exit 1  # Falls Job 2 absichtlich fehlschlagen soll, ansonsten entfernen
+      - name: Make Job 2 Fail
+        run: exit 1
 
   job-3:
     name: Job 3
-    if: github.event.inputs.run-job-3  # Korrekte boolean-Prüfung
+    if: github.event.inputs.run-job-3 == 'true'
     runs-on: ubuntu-latest
     needs:
       - job-1
@@ -43,7 +43,7 @@ jobs:
   job-4:
     name: Job 4
     runs-on: ubuntu-latest
-    if: always()  # Wird immer ausgeführt, auch wenn job-2 oder job-3 fehlschlägt
+    # if: always()
     needs:
       - job-2
       - job-3
